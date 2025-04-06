@@ -1,22 +1,20 @@
 #!/usr/bin/python3
-"""This is the City module.
-Contains the City class that inherits from Base = declarative_base()
-"""
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.sql.schema import ForeignKey
-from model_state import Base
+"""updates the database with new state"""
+import sys
+from model_state import Base, State
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 
 
-class City(Base):
-    """This class links to the `cities` table of our database.
-    Attributes:
-        id (int): id of the city.
-        name (str): name of the city.
-        state_id (int): id of the associated state.
-    """
+if __name__ == "__main__":
+    engine = create_engine("mysql+mysqldb://{}:{}@localhost/{}"
+                           .format(sys.argv[1], sys.argv[2], sys.argv[3]),
+                           pool_pre_ping=True)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    Base.metadata.create_all(engine)
 
-    __tablename__ = 'cities'
-
-    id = Column(Integer, autoincrement=True, nullable=False, primary_key=True)
-    name = Column(String(128), nullable=False)
-    state_id = Column(Integer, ForeignKey('states.id'), nullable=False)
+    state = session.query(State).filter(State.id == 2).first()
+    state.name = "New Mexico"
+    session.commit()
+    session.close()
