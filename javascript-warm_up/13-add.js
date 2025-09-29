@@ -1,4 +1,3 @@
 #!/usr/bin/node
-exports.add = function (a, b) {
-	  return (a + b);
-};
+
+module.exports.add = (a, b) => Number(a) + Number(b);
