@@ -1,9 +1,12 @@
 #!/usr/bin/node
-function add (a, b) {
-	  return (a + b);
-}
-const argv = process.argv.slice(2);
-const y = parseInt(argv[0]);
-const z = parseInt(argv[1]);
 
-console.log(add(y, z));
+const args = process.argv.slice(2);
+
+const numb1 = parseInt(args[0]);
+const numb2 = parseInt(args[1]);
+
+function add (a, b) {
+  console.log(a + b);
+}
+
+add(numb1, numb2);
